@@ -1,18 +1,13 @@
 {
-  "name": "generator-demoiselle",
-  "version": "1.1.1",
-  "description": "Gerador Demoiselle 3.0 JEE7 com Angular2",
-  "homepage": "https://github.com/demoiselle/generator-demoiselle",
+  "name": "generator-gladsonic",
+  "version": "1.0.0",
+  "description": "Gerador Demoiselle 3.0 JEE7 com AngularJS 1.6 (npm, Grunt e Bower) Material Design",
+  "homepage": "https://github.com/PGXP/generator-demoiselle",
   "authors": [
     {
       "name": "Paulo Gladson",
       "email": "paulopinheiro777@gmail.com",
-      "url": "https://github.com/demoiselle"
-    },
-    {
-      "name": "Leonardo Merlin",
-      "email": "leonardo.merlin@serpro.gov.br",
-      "url": "http://leonardomerlin.com.br"
+      "url": "https://github.com/PauloGladson"
     }
   ],
   "files": [
@@ -24,10 +19,14 @@
   ],
   "main": "generators/app/index.js",
   "keywords": [
-    "Demoiselle",
+    "Demoiselle v3",
     "JEE7",
     "Java",
-    "Angular",
+    "AngularJS 1.6",
+        "Grunt",
+        "Bower",
+        "NPM",
+        "Material Design",
     "Swagger",
     "yeoman-generator"
   ],

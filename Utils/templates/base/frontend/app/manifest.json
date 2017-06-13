@@ -1,0 +1,55 @@
+{
+    "lang": "pt-br",
+    "dir": "ltr",
+    "manifest_version": 2,
+    "name": "<%= package.lower %>",
+    "version": "1.0.0",
+    "short_name": "<%= package.lower %>",
+    "start_url": "/",
+    "display": "fullscreen",
+    "background_color": "#ffffff",
+    "theme_color": "#ffffff",
+    "description": "<%= package.lower %>",
+    "offline_enabled": true,
+    "gcm_sender_id": "0000000000000",
+    "serviceworker": {
+        "src": "service-worker.js",
+        "scope": "/",
+        "use_cache": true
+    },
+    "icons": [
+        {
+            "src": "images/windows10/Square71x71Logo.scale-400.png",
+            "sizes": "284x284"
+        },
+        {
+            "src": "images/windows10/Square71x71Logo.scale-200.png",
+            "sizes": "142x142"
+        },
+        {
+            "src": "images/windows10/Square71x71Logo.scale-100.png",
+            "sizes": "71x71"
+        }
+    ],
+    "related_applications": [
+        {
+            "platform": "web",
+            "url": "https://www.<%= package.lower %>.com/"
+        }
+    ],
+    "permissions": [
+        "gcm",
+        "storage",
+        "alarms",
+        "notifications",
+        "https://www.<%= package.lower %>.com/",
+        {
+            "fileSystem": [
+                "write",
+                "retainEntries",
+                "directory"
+            ]
+        }
+    ],
+    "content_security_policy": "script-src 'self'; object-src 'self'"
+}
