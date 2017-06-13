@@ -3,12 +3,12 @@
 > Gerador para Demoiselle 3.0
 
 Versões do Gerador
-- 1.1.X para Angular 4.0.1
-- 1.0.X para Angular 2.3.0
+- 1.0.0 para Angular 1.6
+
 
 Utilitário para a criação da estrutura básica de um projeto, arquivos e estrutura de pastas, utilizando os padrôes:
 - Demoiselle 3.0
-- Angular
+- Angular1.6
 - Swagger Spec - [OpenApis](https://openapis.org/specification)
 
 
