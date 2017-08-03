@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('AuthController', ['$scope', '$rootScope', 'AUTH_EVENTS', 'AuthService', '$location', '$routeParams',
-    function ($scope, $rootScope, AUTH_EVENTS, AuthService, $location, $routeParams) {
+app.controller('AuthController', ['$scope', '$rootScope', 'AUTH_EVENTS', 'AuthService', '$location', '$routeParams', 'AlertService',
+    function ($scope, $rootScope, AUTH_EVENTS, AuthService, $location, $routeParams, AlertService) {
 
         $scope.credentials = {
             username: '',
@@ -13,22 +13,6 @@ app.controller('AuthController', ['$scope', '$rootScope', 'AUTH_EVENTS', 'AuthSe
 
         if (path === '/usuario/senha/' + id) {
             $scope.credentials.username = id;
-        }
-
-        function error(data, status) {
-            $("[id$='-message']").text("");
-
-            switch (status) {
-                case 412:
-                case 422:
-                    $.each(data, function (i, violation) {
-                        $("#" + violation.property + "-message").text(violation.message);
-                    });
-                    break;
-                case 401:
-                    $("#message").html("Usuário ou senha inválidos.");
-                    break;
-            }
         }
 
         $scope.change = function (credentials) {
@@ -48,19 +32,25 @@ app.controller('AuthController', ['$scope', '$rootScope', 'AUTH_EVENTS', 'AuthSe
         };
 
         $scope.login = function (credentials) {
-
             if (credentials.username && credentials.password) {
-
-                AuthService.login(credentials).then(function () {
-
+                AuthService.login(credentials).then(function (res) {
                     $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-
                 },
-                        function (response) {
-                            error(response.data, response.status);
+                        function (res) {
+                            var data = res.data[0].error;
+                            var status = res.status;
+
+                            if (status === 401) {
+                                AlertService.addWithTimeout('warning', data);
+                            } else if (status === 412 || status === 422) {
+                                AlertService.addWithTimeout('warning', data);
+                            } else if (status === 403) {
+                                AlertService.showMessageForbiden();
+                            }
+
                         });
             } else {
-                $("#message").html("Preencha os campos usuário e senha.");
+                AlertService.addWithTimeout('warning', 'Preencha os campos');
             }
         };
 
@@ -68,7 +58,7 @@ app.controller('AuthController', ['$scope', '$rootScope', 'AUTH_EVENTS', 'AuthSe
 
             if (credentials.username) {
                 AuthService.aminesia(credentials).then(function () {
-                    
+
                 },
                         function (response) {
                             error(response.data, response.status);
@@ -80,4 +70,5 @@ app.controller('AuthController', ['$scope', '$rootScope', 'AUTH_EVENTS', 'AuthSe
             $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
         };
 
-    }]);
+    }
+]);

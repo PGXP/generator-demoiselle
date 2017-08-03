@@ -23,18 +23,31 @@ app.factory('AuthService', ['$http', 'AppService', '$rootScope', '$interval', '$
         };
 
         authService.login = function (credentials) {
-
             AppService.removeToken();
             credentials.fingerprint = 'beta'; //"new Fingerprint({canvas: true}, {screen_resolution: true}).get();"
+            return $http({
+                url: 'api/auth',
+                method: "POST",
+                data: credentials
+            }).then(
+                    function (res) {
+                        if (res.data.key) {
+                            AppService.setToken(res.data.key);
+                            $rootScope.currentUser = AppService.getUserFromToken();
+                        }
+                        return res;
+                    }
+            );
+        };
 
+
+        authService.menus = function () {
             return $http
-                    .post('api/auth', credentials)
+                    .get('api/auth/menu')
                     .success(function (res, status, headers) {
-                        AppService.setToken(res.key);
-                        $rootScope.currentUser = AppService.getUserFromToken();
+                        $rootScope.menus = res;
                         return res;
                     }).error(function (res, status, headers) {
-                AlertService.addWithTimeout('warning', "Usuário não identificado");
                 return res;
             }
             );
@@ -62,12 +75,22 @@ app.factory('AuthService', ['$http', 'AppService', '$rootScope', '$interval', '$
                     .success(function (res, status, headers) {
                         AppService.removeToken();
                         AppService.setToken(res.key);
-                        $rootScope.currentUser = AppService.getUserFromToken()
-                        $rootScope.$digest();
+                        $rootScope.currentUser = AppService.getUserFromToken();
+                        // authService.menu($rootScope.currentUser.roles[0]);
                         return res;
                     }
                     );
         };
+
+//        authService.menu = function (role) {
+//            return $http
+//                    .get('api/auth/menu/' + role)
+//                    .success(function (res, status, headers) {
+//                        $rootScope.menu = res;
+//                        return res;
+//                    }
+//                    );
+//        };
 
         $interval(function () {
             if ($rootScope.currentUser) {
@@ -82,9 +105,7 @@ app.factory('AuthService', ['$http', 'AppService', '$rootScope', '$interval', '$
         authService.isAuthenticated = function () {
             if (!$rootScope.currentUser) {
                 $rootScope.currentUser = AppService.getUserFromToken();
-
             }
-
             return $rootScope.currentUser ? true : false;
         };
 
@@ -120,3 +141,4 @@ app.factory('AuthService', ['$http', 'AppService', '$rootScope', '$interval', '$
         return authService;
     }
 ]);
+

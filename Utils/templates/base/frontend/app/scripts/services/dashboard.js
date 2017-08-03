@@ -1,38 +1,37 @@
 'use strict';
 
 app.factory('DashboardService', ['$http', function ($http) {
+
         var service = {};
 
-        service.findCep = function (cep) {
-            return $http
-                    .get('api/cep?cep=' + cep)
-                    .then(function (res) {
-                        return res.data;
-                    });
+        service.get = function () {
+            return $http.get('api/constantes/perfil').then(function (res) {
+                return res;
+            });
         };
 
-        service.findUf = function (uf) {
-            return $http
-                    .get('api/localidade/uf/' + uf)
-                    .then(function (res) {
-                        return res.data;
-                    });
+        service.delete = function () {
+            return $http.delete('api/constantes/perfil').then(function (res) {
+                return res;
+            });
         };
 
-        service.findLocalidade = function (loc) {
-            return $http
-                    .get('api/localidade/' + loc)
-                    .then(function (res) {
-                        return res.data;
-                    });
+        service.put = function () {
+            return $http.put('api/constantes/perfil').then(function (res) {
+                return res;
+            });
         };
 
-        service.findLogradouro = function (log) {
-            return $http
-                    .get('api/logradouro/' + log)
-                    .then(function (res) {
-                        return res.data;
-                    });
+        service.post = function () {
+            return $http.post('api/constantes/perfil').then(function (res) {
+                return res;
+            });
+        };
+
+        service.patch = function () {
+            return $http.patch('api/constantes/perfil').then(function (res) {
+                return res;
+            });
         };
 
         return service;

@@ -1,0 +1,93 @@
+<section class="content-header">
+    <ol class="breadcrumb">
+        <li><a href="#dashboard"><i class="fa fa-dashboard"></i> Início</a></li>
+        <li class="active"><i class="fa fa-user"></i>Responsável</li>
+    </ol>
+    <div class="col-md-4" >
+        <div has-roles="COORDENADOR">
+            <button class="btn btn-primary" ng-click="save()">
+                <i class="glyphicon glyphicon-ok-sign"> </i> Salvar
+            </button>
+        </div>
+    </div>
+    <div class="col-md-4" >
+        <div has-roles="COORDENADOR" >
+            <button class="btn btn-danger" confirm-button title="Remover?" confirm-action="delete()">
+                <i class="glyphicon glyphicon-alert"> </i> Remover
+            </button>
+        </div>
+    </div>
+    <div class="col-md-4" >
+        <a class="btn btn-primary pull-right" back-button>
+            <i class="glyphicon glyphicon-arrow-left"></i> Voltar</a>
+    </div>
+</section>
+<section class="content-body"  has-roles-disable="COORDENADOR">
+    <div class="panel panel-default col-md-6">
+        <div class="panel-body ">
+
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <label >Nome </label>
+                    <input type="text" class="form-control"  ng-model="coordenador.fullname"	>
+                    <validation-msg propriedade="coordenador.fullname"></validation-msg>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-4">
+                    <label >CPF </label>
+                    <input type="text" class="form-control"  ng-model="coordenador.cpf"	>
+                    <validation-msg propriedade="coordenador.cpf"></validation-msg>
+                </div>
+                <div class="col-md-4">
+                    <label >Identidade </label>
+                    <input type="text" class="form-control" ng-model="coordenador.identidade" >
+                    <validation-msg propriedade="coordenador.identidade"></validation-msg>
+                </div>
+                <div class="col-md-4">
+                    <label >Data do nascimento </label>
+                    <p class="input-group">
+                        <input type="text"
+                               class="form-control"
+                               uib-datepicker-popup="dd/MM/yyyy"
+                               datepicker-options="dateOptions"
+                               ng-model="coordenador.niver"
+                               min-date="01/01/2017"
+                               is-open="dataNiverOpened"
+                               close-text="Fechar"
+                               current-text="Hoje"
+                               clear-text="Limpar"/>
+                        <span class="input-group-btn">
+                            <button type="button"
+                                    class="btn btn-default"
+                                    ng-click="openDataNiver($event)">
+                                <i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </p>
+                    <validation-msg propriedade="coordenador.niver"></validation-msg>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <label >Email </label>
+                    <input type="text" class="form-control" ng-model="coordenador.email">
+                    <validation-msg propriedade="coordenador.email"></validation-msg>
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <label >Receber notificações </label>
+
+                    <input type="checkbox" class="form-control"  ng-model="coordenador.notifica"	>
+                    <validation-msg propriedade="coordenador.notifica"></validation-msg>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>

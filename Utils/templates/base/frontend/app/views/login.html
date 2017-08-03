@@ -1,0 +1,43 @@
+<md-card  layout-align-gt-sm="33" layout-align-gt-md="33" >
+    <img ng-src="images/login.jpg" class="md-card-image" alt="login">
+    <md-tabs md-dynamic-height md-border-bottom>
+
+        <md-tab label="Social">
+            <md-card-content>
+                <md-button g-login type="button" class="loginBtn loginBtn--google">Google</md-button>
+                <md-button fb-login type="button" class="loginBtn loginBtn--facebook">Facebook</md-button>
+            </md-card-content>
+        </md-tab>
+
+        <md-tab label="Login">
+            <md-content class="md-padding">
+                <md-card-content>
+                    <md-input-container class="md-block">
+                        <label>E-mail</label>
+                        <input ng-model="credencials.username">
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Senha</label>
+                        <input type="password" ng-model="credencials.password">
+                    </md-input-container>
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button ng-click="login(credencials)">ENTRAR</md-button>
+                </md-card-actions>
+            </md-content>
+        </md-tab>
+
+        <md-tab label="Lembrar Senha">
+            <md-card-content>
+                <md-input-container class="md-block">
+                    <label>E-mail</label>
+                    <input ng-model="credencials.username">
+                </md-input-container>
+            </md-card-content>
+            <md-card-actions layout="row" layout-align="end center">
+                <md-button ng-click="aminesia(credencials)">Enviar email</md-button>
+            </md-card-actions>
+        </md-tab>
+
+    </md-tabs>
+</md-card>

@@ -1,0 +1,18 @@
+<section class="content-header">
+    <ul class="breadcrumb">
+        <li><a href="#dashboard"><i class="fa fa-dashboard"></i> Início</a></li>
+        <li class="active"><i class="fa fa-users"></i>Coordenador</li>
+    </ul>
+    <div class="col-md-12" >
+        <div has-roles="COORDENADOR">
+            <button has-roles="COORDENADOR" class="btn btn-default" ng-click="new ()">
+                <i class="glyphicon glyphicon-plus-sign"> </i> Novo
+            </button>
+        </div>
+    </div>
+</section>
+<section class="content-body"  has-roles-disable="COORDENADOR">
+    <div class="col-md-12">
+        <div ui-grid="gridOptions"  ui-grid-pagination class="grid"></div>
+    </div>
+</section>

@@ -1,5 +1,4 @@
 'use strict';
-
 var app = angular.module('app', [
     'ngAria',
     'ngAnimate',
@@ -7,26 +6,51 @@ var app = angular.module('app', [
     'ngMessages',
     'ngRoute',
     'ngSanitize',
-    'ui.bootstrap',
     'ngWebsocket',
     'ngMaterial',
     'ngMdIcons',
+    'socialLogin',
     'Config'
-]).config(['$routeProvider', 'USER_ROLES', '$websocketProvider',
-    function ($routeProvider, USER_ROLES, $websocketProvider) {
+]).config(['$routeProvider', 'USER_ROLES', '$websocketProvider', 'socialProvider', '$mdThemingProvider', '$mdProgressCircularProvider',
+    function ($routeProvider, USER_ROLES, $websocketProvider, socialProvider, $mdThemingProvider, $mdProgressCircularProvider) {
+
+        socialProvider.setGoogleKey("cod_google");
+        socialProvider.setFbKey({appId: "id", apiVersion: "v2.10"});
+
+        var customBlueMap = $mdThemingProvider.extendPalette('light-blue', {
+            'contrastDefaultColor': 'light',
+            'contrastDarkColors': ['50'],
+            '50': 'ffffff'
+        });
+
+        $mdThemingProvider.definePalette('customBlue', customBlueMap);
+        $mdThemingProvider.theme('default')
+                .primaryPalette('customBlue', {
+                    'default': '500',
+                    'hue-1': '50'
+                })
+                .accentPalette('red');
+        $mdThemingProvider.theme('input', 'default')
+                .primaryPalette('grey');
+
+        $mdProgressCircularProvider.configure({
+            progressSize: 100,
+            strokeWidth: 20,
+            duration: 800
+        });
 
         $websocketProvider.$setup({
             lazy: false,
             reconnect: true,
-            reconnectInterval: 7777,
+            reconnectInterval: 777,
             mock: false,
             enqueue: true
         });
 
         $routeProvider.otherwise({
-            redirectTo: '/',
+            redirectTo: '/dashboard',
             data: {
-                authorizedRoles: [USER_ROLES.COORDENADOR]
+                authorizedRoles: [USER_ROLES.COORDENADOR, USER_ROLES.PROFESSOR]
             }
         });
 
@@ -86,8 +110,8 @@ app.config(['$httpProvider', function ($httpProvider) {
                 return $injector.get('AuthInterceptor');
             }]);
     }]);
-app.run(['$rootScope', '$location', '$window', 'AUTH_EVENTS', 'APP_EVENTS', 'USER_ROLES', 'AuthService', 'AppService', 'AlertService', 'WS',
-    function ($rootScope, $location, $window, AUTH_EVENTS, APP_EVENTS, USER_ROLES, AuthService, AppService, AlertService, WS) {
+app.run(['$rootScope', '$location', '$window', 'AUTH_EVENTS', 'APP_EVENTS', 'USER_ROLES', 'AuthService', 'AppService', 'AlertService',
+    function ($rootScope, $location, $window, AUTH_EVENTS, APP_EVENTS, USER_ROLES, AuthService, AppService, AlertService) {
 
         $rootScope.$on('$routeChangeStart', function (event, next) {
 
@@ -107,6 +131,20 @@ app.run(['$rootScope', '$location', '$window', 'AUTH_EVENTS', 'APP_EVENTS', 'USE
                     }
                 }
             }
+        });
+
+        $rootScope.$on('event:social-sign-in-success', function (event, userDetails) {
+            AuthService.social(userDetails).then(
+                    function (res) {
+                        $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+                    },
+                    function (res) {
+                        AlertService.addWithTimeout('warning', 'Utilize usuário e senha');
+                    });
+        });
+
+        $rootScope.$on('event:social-sign-out-success', function (event, logoutStatus) {
+
         });
 
         $rootScope.$on(AUTH_EVENTS.quantidade, function (emit, args) {
@@ -134,27 +172,23 @@ app.run(['$rootScope', '$location', '$window', 'AUTH_EVENTS', 'APP_EVENTS', 'USE
             $location.path("/login");
         });
         $rootScope.$on(AUTH_EVENTS.logoutSuccess, function () {
-            WS.command("logout", $rootScope.currentUser.identity);
-            WS.command("lista", $rootScope.currentUser.identity);
             $rootScope.currentUser = null;
             AppService.removeToken();
             $location.path('/login');
         });
         $rootScope.$on(AUTH_EVENTS.loginSuccess, function () {
-            WS.command("login", $rootScope.currentUser.identity);
             $window.location.reload();
-            $location.path('/agenda');
+            $location.path('/dashboard');
         });
         $rootScope.$on(APP_EVENTS.offline, function () {
             AlertService.clear();
             AlertService.addWithTimeout('danger', 'Servidor está temporariamente indisponível, tente mais tarde');
         });
-        // Check if a new cache is available on page load.
+
         $window.addEventListener('load', function (e) {
             $window.applicationCache.addEventListener('updateready', function (e) {
                 if ($window.applicationCache.status === $window.applicationCache.UPDATEREADY) {
                     $window.location.reload();
-                    //$rootScope.$apply();
                 }
             }, false);
         }, false);
@@ -178,9 +212,10 @@ app.constant('AUTH_EVENTS', {
 });
 app.constant('USER_ROLES', {
     ADMINISTRADOR: 'ADMINISTRADOR',
-    COORDENADOR: 'COORDENADOR',
-    PROFESSOR: 'PROFESSOR',
-    PAI: 'PAI',
+    GERENTE: 'GERENTE',
+    COORDENADOR: 'GERENTE',
+    ATENDENTE: 'ATENDENTE',
+    VISITANTE: 'VISITANTE',
     NOT_LOGGED: 'NOT_LOGGED'
 });
 

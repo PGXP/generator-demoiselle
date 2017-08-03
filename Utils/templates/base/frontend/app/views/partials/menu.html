@@ -1,0 +1,28 @@
+<!--<div id="sidebar-menu" class="main_menu_side hidden-print main_menu" >
+    <div class="menu_section" >
+        <ul class="nav side-menu" >
+            <li ng-repeat="m in menus track by $index" >
+                <a><i class="{{m.icon}}"></i> {{m.description}} <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    <li  ng-repeat="s in m.submenuSet">
+                        <a ng-href="{{s.link}}">{{s.description}}</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>-->
+<div class="menu_section" >
+    <uib-accordion close-others="oneAtATime">
+
+        <div  uib-accordion-group ng-repeat="m in menus track by $index">
+            <uib-accordion-heading class="nav side-menu">
+                <i class="{{m.icon}}"></i> {{m.description}} <span class="fa fa-chevron-down"></span>
+            </uib-accordion-heading>
+            <p  ng-repeat="s in m.submenuSet" >
+                <a ng-href="{{s.link}}">{{s.description}}</a>
+            </p>
+        </div>
+
+    </uib-accordion>
+</div>

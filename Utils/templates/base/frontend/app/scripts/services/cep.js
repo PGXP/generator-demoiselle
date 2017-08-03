@@ -10,7 +10,7 @@ app.factory('CepService', ['$http', function ($http) {
         };
 
         service.getUf = function () {
-            return $http.get('https://cep-fwkdemoiselle.rhcloud.com/api/v1/ufs').then(function (res) {
+            return $http.get('ttps://cep-fwkdemoiselle.rhcloud.com/api/v1/ufs').then(function (res) {
                 return res;
             });
         };
@@ -23,3 +23,4 @@ app.factory('CepService', ['$http', function ($http) {
 
         return service;
     }]);
+

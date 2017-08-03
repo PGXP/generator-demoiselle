@@ -1,11 +1,20 @@
 'use strict';
 
-app.factory('AlertService', ['$rootScope', '$timeout', 'AUTH_EVENTS', 'Win', 
+app.factory('AlertService', ['$rootScope', '$timeout', 'AUTH_EVENTS', 'Win',
     function ($rootScope, $timeout, AUTH_EVENTS, Win) {
         var alertService = {};
 
         // create an array of alerts available globally
         $rootScope.alerts = [];
+
+        if (window.Notification) {
+            if (Notification.permission === 'denied') {
+                console.log('The user has blocked notifications.');
+                //return;
+            } else {
+                Notification.requestPermission();
+            }
+        }
 
         alertService.addWithTimeout = function (type, msg, timeout) {
             var alert = alertService.add(type, msg);
